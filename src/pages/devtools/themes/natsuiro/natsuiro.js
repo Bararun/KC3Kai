@@ -477,7 +477,7 @@
 
 		// AntiAir Formation Toggle
 		$(".summary-antiair").on("click",function(){
-			ConfigManager.scrollAntiAirFormation();
+			ConfigManager.scrollAntiAirFormation(selectedFleet === 5);
 			NatsuiroListeners.Fleet();
 		}).addClass("hover");
 
@@ -1193,6 +1193,9 @@
 					lv: MainFleet.totalLevel() + EscortFleet.totalLevel(),
 					elos: Math.qckInt(null,MainFleet.eLoS()+EscortFleet.eLoS(),2),
 					air: MainFleet.fighterPowerText(),
+					antiAir: Math.floor(AntiAir.fleetCombinedAdjustedAntiAir(
+						MainFleet, EscortFleet,
+						AntiAir.getFormationModifiers(ConfigManager.aaFormation))),
 					speed:
 						(MainFleet.fastFleet && EscortFleet.fastFleet)
 						? KC3Meta.term("SpeedFast") : KC3Meta.term("SpeedSlow"),
@@ -1291,6 +1294,8 @@
 			$(".summary-level .summary_text").text( FleetSummary.lv );
 			$(".summary-eqlos .summary_text").text( FleetSummary.elos );
 			$(".summary-airfp .summary_text").text( FleetSummary.air );
+			$(".summary-antiair .summary_icon img")
+				.attr("src", KC3Meta.formationIcon(ConfigManager.aaFormation));
 			$(".summary-antiair .summary_text").text( FleetSummary.antiAir )
 				.parent().attr("title", KC3Meta.formationText(ConfigManager.aaFormation) );
 			$(".summary-speed .summary_text").text( FleetSummary.speed );
